@@ -152,7 +152,7 @@ const heroNames = {1: "MIYA", 2: "BALMOND", 3: "SABER", 4: "ALICE", 5: "NANA", 6
     92: "CARMILLA", 93: "ATLAS", 94: "POPOL AND KUPA", 95: "YU ZHONG", 96: "LUO YI", 97: "BENEDETTA", 98: "KHALEED", 99: "BARATS", 100: "BRODY", 
     101: "YVE", 102: "MATHILDA", 103: "PAQUITO", 104: "GLOO", 105: "BEATRIX", 106: "PHOVEUS", 107: "NATAN", 108: "AULUS", 109: "AAMON", 110: "VALENTINA", 
     111: "EDITH", 112: "FLORYN", 113: "YIN", 114: "MELISSA", 115: "XAVIER", 116: "JULIAN", 117: "FREDRINN", 118: "JOY", 119: "NOVARIA", 120: "ARLOTT",
-    121: "IXIA"}
+    121: "IXIA", 122 : "NOLAN"}
 
 // app.get('/token', (req, res) => {
 //     res.sendFile(__dirname + '/public/token.html')
@@ -233,9 +233,9 @@ app.post('/up', (req, res) => {
                 //return res.status(500).send('Error saving playerList data.');
             }
         })
-        console.log(playerList); // Log the player list data
+        console.log(playerList);
         readAndUpdateGlobalVariables();
-        res.status(200).send('Player list received successfully.'); // Respond to the client
+        res.status(200).send('Player list received successfully.');
     } else {
         res.status(400).send('Invalid data provided.');
     }
@@ -412,11 +412,11 @@ app.get('/post-data', (req, res) => {
             }
             //team1MainEmblem
             for (let i = 0; i < 5; i++) {
-                responseData[`player${i+1}MainEmblem`] = `${formData.mainEmblem}${team1[i].runeid}.png`
+                responseData[`player${i+1}MainEmblem`] = `${formData.resultEmblem}${team1[i].runeid}.png`
             }
             //team2MainEmblem
             for (let i = 0; i < 5; i++) {
-                responseData[`player${i+6}MainEmblem`] = `${formData.mainEmblem}${team2[i].runeid}.png`
+                responseData[`player${i+6}MainEmblem`] = `${formData.resultEmblem}${team2[i].runeid}.png`
             }
             //teamData
             let camp1 = body.data.camp_list[0]
@@ -580,6 +580,7 @@ app.get('/mvp', (req, res) => {
             for (let i = 0; i < 3; i++) {
                 responseData[`emblem${i + 1}`] = `${formData.mvpEmblemPath}${mvpPlayer.rune_map[i + 1]}.png`
             }
+            responseData.customEmblem = `${formData.mvpEmblemPath}${mvpPlayer.runeid}.png`
             //items
             for (let i = 0; i < 6; i++) {
                 responseData[`Item${i + 1}`] = mvpPlayer.equip_list[i] === null ? `${formData.mvpPlayerItemPath}0.png` : `${formData.mvpPlayerItemPath}${mvpPlayer.equip_list[i] || 0}.png`
@@ -600,7 +601,7 @@ app.get('/mvp', (req, res) => {
             for (let i = 0; i < 3; i++) {
                 responseData[`svpEmblem${i + 1}`] = `${formData.mvpEmblemPath}${mvpPlayer2.rune_map[i + 1]}.png`
             }
-
+            responseData.customEmblem2 = `${formData.mvpEmblemPath}${mvpPlayer2.runeid}.png`
             //items
             for (let i = 0; i < 6; i++) {
                 responseData[`svpItem${i + 1}`] = mvpPlayer2.equip_list[i] === null ? `${formData.mvpPlayerItemPath}0.png` : `${formData.mvpPlayerItemPath}${mvpPlayer2.equip_list[i] || 0}.png`
@@ -901,6 +902,28 @@ app.get('/item', (req, res) => {
             responseData.gold8Short = team2[2].gold >= 1000 ? (team2[2].gold / 1000).toFixed(1) + 'k' : team2[2].gold.toString();
             responseData.gold9Short = team2[3].gold >= 1000 ? (team2[3].gold / 1000).toFixed(1) + 'k' : team2[3].gold.toString();
             responseData.gold10Short = team2[4].gold >= 1000 ? (team2[4].gold / 1000).toFixed(1) + 'k' : team2[4].gold.toString();
+
+            //damage
+            responseData.damage1Short = team1[0].total_damage >= 1000 ? (team1[0].total_damage / 1000).toFixed(1) + 'k' : team1[0].total_damage.toString();
+            responseData.damage2Short = team1[1].total_damage >= 1000 ? (team1[1].total_damage / 1000).toFixed(1) + 'k' : team1[1].total_damage.toString();
+            responseData.damage3Short = team1[2].total_damage >= 1000 ? (team1[2].total_damage / 1000).toFixed(1) + 'k' : team1[2].total_damage.toString();
+            responseData.damage4Short = team1[3].total_damage >= 1000 ? (team1[3].total_damage / 1000).toFixed(1) + 'k' : team1[3].total_damage.toString();
+            responseData.damage5Short = team1[4].total_damage >= 1000 ? (team1[4].total_damage / 1000).toFixed(1) + 'k' : team1[4].total_damage.toString();
+
+            responseData.damage6Short = team2[0].total_damage >= 1000 ? (team2[0].total_damage / 1000).toFixed(1) + 'k' : team2[0].total_damage.toString();
+            responseData.damage7Short = team2[1].total_damage >= 1000 ? (team2[1].total_damage / 1000).toFixed(1) + 'k' : team2[1].total_damage.toString();
+            responseData.damage8Short = team2[2].total_damage >= 1000 ? (team2[2].total_damage / 1000).toFixed(1) + 'k' : team2[2].total_damage.toString();
+            responseData.damage9Short = team2[3].total_damage >= 1000 ? (team2[3].total_damage / 1000).toFixed(1) + 'k' : team2[3].total_damage.toString();
+            responseData.damage10Short = team2[4].total_damage >= 1000 ? (team2[4].total_damage / 1000).toFixed(1) + 'k' : team2[4].total_damage.toString();
+
+            //kda
+            for (let i = 0; i < 5; i++) {
+                responseData[`kda${i + 1}`] = `${team1[i].kill_num} / ${team1[i].dead_num} / ${team1[i].assist_num}`
+            }
+
+            for (let i = 0; i < 5; i++) {
+                responseData[`kda${i + 6}`] = `${team2[i].kill_num} / ${team2[i].dead_num} / ${team2[i].assist_num}`
+            }
 
             //Team1spells
             for (let i = 0; i < 5 ; i++) {
