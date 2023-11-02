@@ -1,2 +1,2 @@
 @echo off
-nodemon app.js
+node app.js
