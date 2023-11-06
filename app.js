@@ -88,6 +88,14 @@ const formatTime = (number) => {
     return `${formattedHours}:${formattedMinutes}`;
 }
 
+function ledTime(time) {
+    if (time === 0) {
+        return "";
+    } else {
+        return time.toString().padStart(2, '0');
+    }
+}
+
 function roles_letter(letter) {
     const roleMap = {
         'mid': 1,
@@ -820,11 +828,11 @@ app.get('/led', (req, res) => {
 
             //time
             for (let i = 0; i < 5; i++) {
-                responseData[`respawntime${i+1}`] = formatTime(team1[i].revive_left_time)
+                responseData[`respawntime${i+1}`] = ledTime(team1[i].revive_left_time)
             }
 
             for (let i = 0; i < 5; i++) {
-                responseData[`respawntime${i+6}`] = formatTime(team2[i].revive_left_time)
+                responseData[`respawntime${i+6}`] = ledTime(team2[i].revive_left_time)
             }
 
             for (let i = 0; i < 5; i++) {
